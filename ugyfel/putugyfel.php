@@ -8,7 +8,7 @@ $azon=2005;
 $nev="Szabi";	
 $szulev =2010;
 $irszam=4035;	
-$orsz="RO";
+$orsz="H";
 require_once './databaseconnect.php';
 $sql = "UPDATE `ugyfel` SET `nev`='$nev',`szulev`='$szulev',`irszam`='$irszam',`orsz`='$orsz' WHERE `azon`=".$azon;
 $stmt = $connection->prepare($sql);
