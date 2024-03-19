@@ -1,18 +1,12 @@
 <?php
-//$azon=$_POST["azon"];
-//$nev=$_POST["nev"];	
-//$szulev =$_post["szulev"];
-//$irszam=$_POST["irszam"];	
-//$orsz=$_POST["orsz"];
-$azon=2005;
-$nev="Zsolt";	
-$szulev =2003;
-$irszam=4032;	
-$orsz="H";
+$nev=$_POST["nev"];	
+$szuldatum =$_POST["szuldatum"];
+$irszam=$_POST["irszam"];	
+$orsz=$_POST["orsz"];
 require_once './databaseconnect.php';
-$sql = "INSERT INTO ugyfel (azon, nev, szulev, irszam, orsz) VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO ugyfel (azon, nev, szuldatum, irszam, orsz) VALUES (NULL, ?, ?, ?, ?)";
 $stmt = $connection->prepare($sql);
-$stmt->bind_param("isiis", $azon, $nev, $szulev, $irszam, $orsz);  
+$stmt->bind_param("siis", $nev, $szuldatum, $irszam, $orsz);  
 if ($stmt->execute()) {
     http_response_code(201);
     echo 'Sikeresen hozzáadva';

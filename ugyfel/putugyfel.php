@@ -1,21 +1,26 @@
 <?php
-//$azon=$_POST["azon"];
-//$nev=$_POST["nev"];	
-//$szulev =$_post["szulev"];
-//$irszam=$_POST["irszam"];	
-//$orsz=$_POST["orsz"];
-$azon=2005;
-$nev="Szabi";	
-$szulev =2010;
-$irszam=4035;	
-$orsz="H";
+$putdata = fopen('php://input', "r");
+$raw_data= "";
+while($chunk = fread($putdata, 1024)){
+    $raw_data.= $chunk;
+}
+fclose($putdata);
+// adatok beolvasása JSON formátumban
+$adatJson = json_decode($raw_data);
+$azon=$adatJson->azon;
+$nev=$adatJson->nev;
+$szuldatum =$adatJson->szuldatum;
+$irszam=$adatJson->irszam;	
+$orsz=$adatJson->orsz;
+// bejövő adatok rendelkezésre állnak, kiírjuk az adatbázisba
 require_once './databaseconnect.php';
-$sql = "UPDATE `ugyfel` SET `nev`='$nev',`szulev`='$szulev',`irszam`='$irszam',`orsz`='$orsz' WHERE `azon`=".$azon;
+$sql = "UPDATE ugyfel SET nev=?, szuldatum=?, irszam=?, orsz=? WHERE azon=?";
 $stmt = $connection->prepare($sql);
+$stmt->bind_param("siisi", $nev, $szuldatum, $irszam, $orsz, $azon);  
 if ($stmt->execute()) {
     http_response_code(201);
-    echo 'Sikeresen frissítve';
+    echo 'Sikeresen módosítva';
 } else {
     http_response_code(404);
-    echo 'Nem sikerült frissíteni';
+    echo 'Nem sikerült módosítani';
 }
